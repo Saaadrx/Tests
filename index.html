@@ -1,0 +1,865 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CompoundRx — Precision Dermatology Compounding</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --black:#050c0a;
+  --dark:#0a1412;
+  --dark2:#0f1f1c;
+  --teal:#0d9488;
+  --teal2:#14b8a6;
+  --teal3:#5eead4;
+  --blue:#0ea5e9;
+  --blue2:#38bdf8;
+  --muted:#4a6b66;
+  --muted2:#7aa8a2;
+  --border:#1a2e2b;
+  --border2:#1f3835;
+  --text:#e2f0ee;
+  --text2:#9ec5be;
+  --white:#ffffff;
+}
+html{scroll-behavior:smooth}
+body{font-family:'Inter',sans-serif;background:var(--black);color:var(--text);overflow-x:hidden;cursor:none}
+
+/* CUSTOM CURSOR */
+.cursor{position:fixed;width:8px;height:8px;background:var(--teal2);border-radius:50%;pointer-events:none;z-index:9999;transition:transform 0.1s;mix-blend-mode:difference}
+.cursor-ring{position:fixed;width:32px;height:32px;border:1px solid var(--teal);border-radius:50%;pointer-events:none;z-index:9998;transition:all 0.15s ease;mix-blend-mode:difference}
+
+/* NAV */
+nav{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:0 48px;height:64px;background:rgba(5,12,10,0.92);backdrop-filter:blur(12px);border-bottom:1px solid var(--border)}
+.nav-logo{font-family:'Syne',sans-serif;font-size:20px;font-weight:800;letter-spacing:-0.5px;color:var(--white)}
+.nav-logo span{color:var(--teal2)}
+.nav-links{display:flex;align-items:center;gap:8px}
+.nav-link{font-size:13px;font-weight:400;color:var(--text2);padding:8px 16px;border-radius:4px;cursor:pointer;transition:all 0.2s;text-decoration:none;background:none;border:none;font-family:'Inter',sans-serif}
+.nav-link:hover,.nav-link.active{color:var(--teal2);background:rgba(13,148,136,0.1)}
+.nav-cta{font-size:13px;font-weight:500;color:var(--black);background:var(--teal2);padding:8px 20px;border-radius:4px;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all 0.2s}
+.nav-cta:hover{background:var(--teal3)}
+
+/* PAGE SYSTEM */
+.page{display:none;min-height:100vh;padding-top:64px}
+.page.active{display:block}
+
+/* ═══════════════════════════════════════
+   HOME PAGE
+═══════════════════════════════════════ */
+
+/* HERO */
+.hero{min-height:calc(100vh - 64px);display:grid;grid-template-columns:1fr 1fr;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;background:radial-gradient(ellipse 60% 60% at 70% 50%,rgba(13,148,136,0.12) 0%,transparent 70%);pointer-events:none}
+.hero-grid{position:absolute;inset:0;background-image:linear-gradient(var(--border) 1px,transparent 1px),linear-gradient(90deg,var(--border) 1px,transparent 1px);background-size:48px 48px;opacity:0.3;pointer-events:none}
+
+.hero-left{padding:80px 48px 80px 48px;display:flex;flex-direction:column;justify-content:center;position:relative;z-index:2}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--teal2);margin-bottom:32px}
+.hero-dot{width:6px;height:6px;border-radius:50%;background:var(--teal2);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1;transform:scale(1)}50%{opacity:0.5;transform:scale(0.8)}}
+
+h1{font-family:'Syne',sans-serif;font-size:clamp(40px,4.5vw,64px);font-weight:800;line-height:1.05;letter-spacing:-2px;color:var(--white);margin-bottom:24px}
+h1 .teal{color:var(--teal2)}
+h1 .blue{color:var(--blue2)}
+
+.hero-sub{font-size:16px;color:var(--text2);line-height:1.7;font-weight:300;max-width:440px;margin-bottom:44px}
+.hero-btns{display:flex;gap:12px;flex-wrap:wrap}
+.btn-primary{font-size:13px;font-weight:500;color:var(--black);background:var(--teal2);padding:12px 28px;border-radius:4px;cursor:pointer;border:none;font-family:'Inter',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-block}
+.btn-primary:hover{background:var(--teal3);transform:translateY(-1px)}
+.btn-ghost{font-size:13px;font-weight:500;color:var(--teal2);border:1px solid var(--teal);padding:12px 28px;border-radius:4px;cursor:pointer;font-family:'Inter',sans-serif;transition:all 0.2s;text-decoration:none;display:inline-block;background:none}
+.btn-ghost:hover{background:rgba(13,148,136,0.1);transform:translateY(-1px)}
+
+/* PRODUCT VISUAL */
+.hero-right{display:flex;align-items:center;justify-content:center;position:relative;z-index:2;padding:40px}
+.product-scene{position:relative;width:280px;height:420px}
+.product-glow{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);width:200px;height:300px;background:radial-gradient(ellipse,rgba(13,148,136,0.3),transparent 70%);filter:blur(30px);pointer-events:none}
+/* Bottle SVG styled */
+.bottle-wrap{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center;animation:float 4s ease-in-out infinite}
+@keyframes float{0%,100%{transform:translateY(0)}50%{transform:translateY(-12px)}}
+.bottle{width:130px;height:260px;background:linear-gradient(135deg,#1a2e2b 0%,#0f1f1c 40%,#0d9488 100%);border-radius:16px 16px 10px 10px;position:relative;box-shadow:0 0 0 1px rgba(13,148,136,0.3),0 40px 80px rgba(0,0,0,0.6),inset 0 1px 0 rgba(255,255,255,0.1);overflow:hidden}
+.bottle::before{content:'';position:absolute;top:0;left:0;right:0;height:40px;background:linear-gradient(180deg,rgba(255,255,255,0.08),transparent);border-radius:16px 16px 0 0}
+.bottle-pump{width:20px;height:50px;background:linear-gradient(180deg,#1f3835,#0a1412);border-radius:4px 4px 0 0;margin-bottom:0;position:relative;box-shadow:0 0 0 1px rgba(13,148,136,0.2)}
+.bottle-pump::before{content:'';position:absolute;top:-10px;left:50%;transform:translateX(-50%);width:8px;height:10px;background:#0d9488;border-radius:2px}
+.bottle-label{position:absolute;top:60px;left:8px;right:8px;background:rgba(5,12,10,0.9);border:1px solid rgba(13,148,136,0.4);border-radius:6px;padding:10px 8px;text-align:left}
+.label-clinic{font-size:6px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal2);margin-bottom:4px}
+.label-divider{height:1px;background:rgba(13,148,136,0.3);margin:4px 0}
+.label-patient{font-size:7px;color:var(--text2);margin-bottom:2px}
+.label-patient strong{color:var(--white);display:block;font-size:8px}
+.label-content{font-size:6.5px;color:var(--teal3);margin-top:4px;font-weight:500}
+.label-ml{font-size:6px;color:var(--muted2);margin-top:2px}
+.bottle-shine{position:absolute;top:0;left:12px;width:12px;bottom:0;background:linear-gradient(180deg,rgba(255,255,255,0.06),transparent);pointer-events:none}
+
+/* STATS BAR */
+.stats-bar{display:grid;grid-template-columns:repeat(3,1fr);border-top:1px solid var(--border);border-bottom:1px solid var(--border);background:var(--dark)}
+.stat-item{padding:28px 32px;border-right:1px solid var(--border);display:flex;flex-direction:column;gap:6px}
+.stat-item:last-child{border-right:none}
+.stat-num{font-family:'Syne',sans-serif;font-size:36px;font-weight:800;color:var(--teal2);letter-spacing:-1px}
+.stat-label{font-size:12px;color:var(--muted2);font-weight:300;letter-spacing:0.3px}
+
+/* SECTION */
+.section{padding:96px 48px}
+.section-tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;font-weight:500;letter-spacing:2px;text-transform:uppercase;color:var(--teal2);margin-bottom:20px}
+.section-tag::before{content:'';width:20px;height:1px;background:var(--teal2)}
+h2{font-family:'Syne',sans-serif;font-size:clamp(28px,3vw,42px);font-weight:700;line-height:1.1;letter-spacing:-1px;color:var(--white);margin-bottom:16px}
+.section-sub{font-size:16px;color:var(--text2);font-weight:300;line-height:1.7;max-width:560px;margin-bottom:56px}
+
+/* FORMULATIONS */
+.formulations-section{background:var(--dark)}
+.form-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--border)}
+.form-card{background:var(--dark2);padding:36px 28px;transition:all 0.3s;cursor:pointer;position:relative;overflow:hidden}
+.form-card::before{content:'';position:absolute;inset:0;background:linear-gradient(135deg,rgba(13,148,136,0.05),transparent);opacity:0;transition:opacity 0.3s}
+.form-card:hover::before{opacity:1}
+.form-card:hover{background:#0d1f1c}
+.form-tag{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal2);background:rgba(13,148,136,0.12);padding:4px 10px;border-radius:2px;display:inline-block;margin-bottom:20px}
+.form-card h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:8px;letter-spacing:-0.3px;line-height:1.3}
+.form-conc{font-size:12px;color:var(--teal3);font-weight:500;margin-bottom:14px;letter-spacing:0.3px}
+.form-desc{font-size:13px;color:var(--text2);font-weight:300;line-height:1.6;margin-bottom:20px}
+.form-specs{list-style:none;display:flex;flex-direction:column;gap:6px;border-top:1px solid var(--border2);padding-top:16px}
+.form-specs li{font-size:11px;color:var(--muted2);display:flex;align-items:center;gap:6px}
+.form-specs li::before{content:'';width:3px;height:3px;background:var(--teal);border-radius:50%;flex-shrink:0}
+.form-card-arrow{position:absolute;bottom:24px;right:24px;width:28px;height:28px;border:1px solid var(--border2);border-radius:50%;display:flex;align-items:center;justify-content:center;color:var(--muted2);font-size:12px;transition:all 0.2s}
+.form-card:hover .form-card-arrow{border-color:var(--teal);color:var(--teal2);background:rgba(13,148,136,0.1)}
+
+/* PROCESS */
+.process-section{background:var(--black);position:relative;overflow:hidden}
+.process-section::before{content:'';position:absolute;top:0;left:0;right:0;bottom:0;background:radial-gradient(ellipse 50% 80% at 50% 0%,rgba(14,165,233,0.06),transparent 60%);pointer-events:none}
+.process-steps{display:grid;grid-template-columns:repeat(4,1fr);gap:0;position:relative;z-index:2}
+.process-connector{display:grid;grid-template-columns:repeat(4,1fr);margin-bottom:0;position:relative}
+.process-connector::before{content:'';position:absolute;top:50%;left:12.5%;right:12.5%;height:1px;background:linear-gradient(90deg,var(--teal),var(--blue));z-index:0}
+.step-circle{width:48px;height:48px;border-radius:50%;background:var(--dark2);border:1px solid var(--teal);display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-size:14px;font-weight:700;color:var(--teal2);margin:0 auto 24px;position:relative;z-index:1}
+.process-step{padding:0 24px 48px;text-align:center;border-right:1px solid var(--border);padding-top:48px}
+.process-step:last-child{border-right:none}
+.process-step h3{font-family:'Syne',sans-serif;font-size:15px;font-weight:600;color:var(--white);margin-bottom:10px}
+.process-step p{font-size:12px;color:var(--text2);font-weight:300;line-height:1.6}
+.step-icon{font-size:22px;margin-bottom:12px}
+
+/* ═══════════════════════════════════════
+   PRESCRIPTION PAGE
+═══════════════════════════════════════ */
+.rx-page{background:var(--black);min-height:calc(100vh - 64px)}
+.rx-hero{background:var(--dark);border-bottom:1px solid var(--border);padding:56px 48px}
+.rx-form-wrap{max-width:860px;margin:0 auto;padding:48px}
+.form-section-title{font-family:'Syne',sans-serif;font-size:13px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--teal2);margin-bottom:20px;padding-bottom:10px;border-bottom:1px solid var(--border)}
+.form-row{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:16px}
+.form-row.three{grid-template-columns:1fr 1fr 1fr}
+.form-row.full{grid-template-columns:1fr}
+.form-group{display:flex;flex-direction:column;gap:6px}
+label{font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted2)}
+input,select,textarea{background:var(--dark2);border:1px solid var(--border2);color:var(--text);font-family:'Inter',sans-serif;font-size:14px;padding:12px 14px;border-radius:6px;outline:none;transition:border-color 0.2s;width:100%}
+input:focus,select:focus,textarea:focus{border-color:var(--teal);box-shadow:0 0 0 3px rgba(13,148,136,0.1)}
+select option{background:var(--dark2);color:var(--text)}
+textarea{resize:vertical;min-height:80px}
+.form-block{background:var(--dark);border:1px solid var(--border);border-radius:8px;padding:28px;margin-bottom:24px}
+.upload-area{border:2px dashed var(--border2);border-radius:8px;padding:36px;text-align:center;cursor:pointer;transition:all 0.2s;position:relative}
+.upload-area:hover{border-color:var(--teal);background:rgba(13,148,136,0.04)}
+.upload-icon{font-size:32px;margin-bottom:12px;color:var(--muted2)}
+.upload-text{font-size:14px;color:var(--text2);margin-bottom:4px}
+.upload-sub{font-size:11px;color:var(--muted2)}
+.upload-area input[type="file"]{position:absolute;inset:0;opacity:0;cursor:pointer;width:100%;height:100%}
+.upload-preview{display:none;margin-top:16px;padding:12px;background:rgba(13,148,136,0.08);border:1px solid var(--teal);border-radius:6px;font-size:12px;color:var(--teal2);align-items:center;gap:8px}
+.submit-btn{width:100%;padding:16px;background:linear-gradient(135deg,var(--teal),var(--blue));color:var(--white);font-family:'Syne',sans-serif;font-size:15px;font-weight:700;letter-spacing:0.5px;border:none;border-radius:6px;cursor:pointer;transition:all 0.2s;margin-top:8px}
+.submit-btn:hover{opacity:0.9;transform:translateY(-1px);box-shadow:0 8px 24px rgba(13,148,136,0.3)}
+.conc-group{display:flex;gap:8px;align-items:flex-end}
+.conc-group select{flex:1}
+.conc-group input{width:100px;flex-shrink:0}
+.rx-success{display:none;background:rgba(13,148,136,0.1);border:1px solid var(--teal);border-radius:8px;padding:24px;text-align:center;margin-top:16px}
+.rx-success h3{font-family:'Syne',sans-serif;color:var(--teal2);margin-bottom:8px}
+.rx-success p{font-size:13px;color:var(--text2)}
+
+/* ═══════════════════════════════════════
+   WHY COMPOUNDING PAGE
+═══════════════════════════════════════ */
+.why-hero{background:var(--dark);border-bottom:1px solid var(--border);padding:80px 48px}
+.why-content{max-width:1100px;margin:0 auto}
+.why-grid{display:grid;grid-template-columns:1fr 1fr;gap:1px;background:var(--border);margin-top:64px}
+.why-card{background:var(--dark2);padding:40px 36px;transition:background 0.2s}
+.why-card:hover{background:#0d1f1c}
+.why-card-icon{width:44px;height:44px;border:1px solid var(--teal);border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:20px;margin-bottom:20px;color:var(--teal2)}
+.why-card h3{font-family:'Syne',sans-serif;font-size:18px;font-weight:700;color:var(--white);margin-bottom:12px;letter-spacing:-0.3px}
+.why-card p{font-size:14px;color:var(--text2);font-weight:300;line-height:1.7}
+.why-card-tag{font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal2);margin-bottom:10px;font-weight:500}
+
+.comparison-section{padding:80px 48px;background:var(--black)}
+.compare-table{max-width:800px;margin:0 auto;border:1px solid var(--border);border-radius:8px;overflow:hidden}
+.compare-header{display:grid;grid-template-columns:2fr 1fr 1fr;background:var(--dark2);padding:16px 24px;border-bottom:1px solid var(--border)}
+.compare-header span{font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;color:var(--muted2)}
+.compare-header span:nth-child(2){color:var(--teal2);text-align:center}
+.compare-header span:nth-child(3){text-align:center}
+.compare-row{display:grid;grid-template-columns:2fr 1fr 1fr;padding:14px 24px;border-bottom:1px solid var(--border);align-items:center}
+.compare-row:last-child{border-bottom:none}
+.compare-row:hover{background:rgba(13,148,136,0.03)}
+.compare-row span:first-child{font-size:13px;color:var(--text2)}
+.compare-check{text-align:center;font-size:16px}
+.check-yes{color:var(--teal2)}
+.check-no{color:#ef4444;opacity:0.6}
+.check-partial{color:#f59e0b;opacity:0.8}
+
+/* ═══════════════════════════════════════
+   ABOUT PAGE
+═══════════════════════════════════════ */
+.about-hero{min-height:50vh;display:flex;align-items:center;padding:80px 48px;background:var(--dark);border-bottom:1px solid var(--border);position:relative;overflow:hidden}
+.about-hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 40% 60% at 80% 50%,rgba(14,165,233,0.08),transparent);pointer-events:none}
+.about-content{max-width:1100px;margin:0 auto;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center;position:relative;z-index:2}
+.about-cred-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:40px}
+.cred-card{background:var(--dark2);border:1px solid var(--border2);border-radius:6px;padding:20px;transition:border-color 0.2s}
+.cred-card:hover{border-color:var(--teal)}
+.cred-card-label{font-size:10px;font-weight:500;letter-spacing:1.5px;text-transform:uppercase;color:var(--teal2);margin-bottom:6px}
+.cred-card h4{font-size:14px;font-weight:500;color:var(--white);margin-bottom:4px}
+.cred-card p{font-size:12px;color:var(--muted2);font-weight:300;line-height:1.5}
+.about-pitch{padding:80px 48px;background:var(--black)}
+.pitch-box{max-width:800px;margin:0 auto;text-align:center}
+.pitch-box h2{font-family:'Syne',sans-serif;font-size:clamp(28px,4vw,48px);font-weight:800;letter-spacing:-1.5px;color:var(--white);line-height:1.1;margin-bottom:24px}
+.pitch-box h2 span{color:var(--teal2)}
+.pitch-box p{font-size:16px;color:var(--text2);font-weight:300;line-height:1.7;max-width:580px;margin:0 auto 40px}
+.contact-row{display:flex;gap:12px;justify-content:center;flex-wrap:wrap}
+
+/* FOOTER */
+footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48px;display:flex;align-items:center;justify-content:space-between}
+.footer-logo{font-family:'Syne',sans-serif;font-size:16px;font-weight:800;color:var(--white)}
+.footer-logo span{color:var(--teal2)}
+.footer-note{font-size:11px;color:var(--muted2)}
+
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fade-up{animation:fadeUp 0.6s ease both}
+.fade-up-1{animation-delay:0.1s}
+.fade-up-2{animation-delay:0.2s}
+.fade-up-3{animation-delay:0.3s}
+.fade-up-4{animation-delay:0.4s}
+
+/* MOBILE */
+@media(max-width:900px){
+  nav{padding:0 20px}
+  .hero{grid-template-columns:1fr}
+  .hero-right{display:none}
+  .section{padding:56px 20px}
+  .form-grid{grid-template-columns:1fr}
+  .process-steps{grid-template-columns:1fr 1fr}
+  .stats-bar{grid-template-columns:1fr}
+  .form-row,.form-row.three{grid-template-columns:1fr}
+  .why-grid{grid-template-columns:1fr}
+  .about-content{grid-template-columns:1fr}
+  .about-cred-grid{grid-template-columns:1fr}
+  footer{flex-direction:column;gap:8px;text-align:center;padding:20px}
+  .rx-form-wrap{padding:24px 20px}
+  .why-hero,.comparison-section,.about-hero,.about-pitch{padding:56px 20px}
+}
+</style>
+</head>
+<body>
+
+<!-- CURSOR -->
+<div class="cursor" id="cursor"></div>
+<div class="cursor-ring" id="cursorRing"></div>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">Compound<span>Rx</span></div>
+  <div class="nav-links">
+    <button class="nav-link active" onclick="showPage('home')">Home</button>
+    <button class="nav-link" onclick="showPage('prescription')">Prescription</button>
+    <button class="nav-link" onclick="showPage('why')">Why Compounding</button>
+    <button class="nav-link" onclick="showPage('about')">About</button>
+    <button class="nav-cta" onclick="showPage('prescription')">Send Prescription →</button>
+  </div>
+</nav>
+
+<!-- ═══════════ HOME PAGE ═══════════ -->
+<div class="page active" id="page-home">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid"></div>
+
+    <div class="hero-left">
+      <div class="hero-eyebrow fade-up fade-up-1"><span class="hero-dot"></span> Bengaluru · Dermatology Compounding</div>
+      <h1 class="fade-up fade-up-2">Formulations built<br>for your <span class="teal">patients.</span><br>Not the <span class="blue">market.</span></h1>
+      <p class="hero-sub fade-up fade-up-3">CompoundRx partners exclusively with dermatologists — delivering HPLC-verified, pH-optimised topical formulations with full batch documentation and 24-hour turnaround.</p>
+      <div class="hero-btns fade-up fade-up-4">
+        <button class="btn-primary" onclick="showPage('prescription')">Send a Prescription</button>
+        <button class="btn-ghost" onclick="showPage('why')">Why Compounding?</button>
+      </div>
+    </div>
+
+    <div class="hero-right">
+      <div class="product-scene">
+        <div class="product-glow"></div>
+        <div class="bottle-wrap">
+          <div class="bottle-pump"></div>
+          <div class="bottle">
+            <div class="bottle-shine"></div>
+            <div class="bottle-label">
+              <div class="label-clinic">✦ Exclusively for</div>
+              <div style="font-size:8px;font-weight:600;color:#5eead4;margin-bottom:3px">Dr. Sharma's Skin Clinic</div>
+              <div class="label-divider"></div>
+              <div class="label-patient">Patient<strong>Priya Mehta, 28F</strong></div>
+              <div class="label-content">Tret 0.025% + Niacinamide 4%<br>+ Azelaic Acid 10%</div>
+              <div class="label-divider" style="margin-top:6px"></div>
+              <div class="label-ml">15ml Airless Pump · Batch #FL-2024-047</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS -->
+  <div class="stats-bar">
+    <div class="stat-item">
+      <span class="stat-num">24h</span>
+      <span class="stat-label">Prescription to dispatch</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">HPLC</span>
+      <span class="stat-label">Every batch analytically verified</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">5+</span>
+      <span class="stat-label">Dermatology formulations ready</span>
+    </div>
+  </div>
+
+  <!-- FORMULATIONS -->
+  <section class="section formulations-section">
+    <div class="section-tag">Formulation portfolio</div>
+    <h2>What we compound.</h2>
+    <p class="section-sub">Each formulation is developed with documented stability data and HPLC-verified potency. Custom concentrations on request.</p>
+
+    <div class="form-grid">
+
+      <div class="form-card">
+        <span class="form-tag">Acne · PIH · Melasma</span>
+        <h3>Tret + Niacinamide + Azelaic Acid</h3>
+        <p class="form-conc">Tretinoin 0.025–0.05% · Niacinamide 4% · Azelaic Acid 10%</p>
+        <p class="form-desc">Triple-active brightening formula. Niacinamide buffers tretinoin irritation while azelaic acid addresses PIH without hydroquinone. Suitable for Fitzpatrick III–VI.</p>
+        <ul class="form-specs">
+          <li>Gel or cream vehicle available</li>
+          <li>pH 5.0–5.5 · light-stable packaging</li>
+          <li>Tretinoin concentration flexible per Rx</li>
+        </ul>
+        <div class="form-card-arrow">→</div>
+      </div>
+
+      <div class="form-card">
+        <span class="form-tag">Melasma · Hyperpigmentation</span>
+        <h3>Kojic + Tranexamic + Azelaic + Tret</h3>
+        <p class="form-conc">Kojic Acid 2% · Tranexamic Acid 3% · Azelaic Acid 10% · Tretinoin 0.025%</p>
+        <p class="form-desc">A multi-mechanism depigmenting combination targeting tyrosinase inhibition, melanocyte activation, and cell turnover simultaneously. Suitable for resistant melasma.</p>
+        <ul class="form-specs">
+          <li>Four complementary depigmenting mechanisms</li>
+          <li>Stable cream base · pH-adjusted</li>
+          <li>No hydroquinone — long-term safe</li>
+        </ul>
+        <div class="form-card-arrow">→</div>
+      </div>
+
+      <div class="form-card">
+        <span class="form-tag">Adult Hormonal Acne</span>
+        <h3>Spiro + Clinda + Tret</h3>
+        <p class="form-conc">Spironolactone 5% · Clindamycin 1% (phosphate) · Tretinoin 0.025%</p>
+        <p class="form-desc">Topical anti-androgenic formula for hormonal adult acne. Avoids systemic spironolactone effects while targeting follicular androgen receptors locally.</p>
+        <ul class="form-specs">
+          <li>Clindamycin as phosphate for stability</li>
+          <li>pH 5.0–5.5 · spiro stability maintained</li>
+          <li>Each active independently HPLC-verified</li>
+        </ul>
+        <div class="form-card-arrow">→</div>
+      </div>
+
+      <div class="form-card">
+        <span class="form-tag">Pigmentation · Anti-ageing</span>
+        <h3>Tret + Hydroquinone + Kojic</h3>
+        <p class="form-conc">Tretinoin 0.05% · Hydroquinone 2–4% · Kojic Acid 2%</p>
+        <p class="form-desc">A modified Kligman-type formula combining retinoid, bleaching agent, and tyrosinase inhibitor. For moderate-to-severe melasma where faster results are needed.</p>
+        <ul class="form-specs">
+          <li>HQ concentration titratable 2–4%</li>
+          <li>Antioxidant system prevents HQ oxidation</li>
+          <li>Opaque amber packaging mandatory</li>
+        </ul>
+        <div class="form-card-arrow">→</div>
+      </div>
+
+      <div class="form-card">
+        <span class="form-tag">Acne · Comedonal</span>
+        <h3>Adapalene Gel</h3>
+        <p class="form-conc">Adapalene 0.1% or 0.3% · Clear gel base</p>
+        <p class="form-desc">Third-generation retinoid with superior tolerability profile vs tretinoin. Compounded adapalene allows flexible concentration titration not available in commercial formats.</p>
+        <ul class="form-specs">
+          <li>0.1% or 0.3% per clinical preference</li>
+          <li>Hydroalcoholic or aqueous gel base</li>
+          <li>Better photostability than tretinoin</li>
+        </ul>
+        <div class="form-card-arrow">→</div>
+      </div>
+
+      <div class="form-card" style="background:rgba(13,148,136,0.04);border:1px dashed rgba(13,148,136,0.3);display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;min-height:280px">
+        <div style="font-size:32px;margin-bottom:16px;color:var(--teal)">+</div>
+        <h3 style="font-size:16px;color:var(--text2)">Custom formulation</h3>
+        <p class="form-desc" style="margin-top:8px">Have a specific combination in mind? We develop custom formulations — just send a prescription or get in touch.</p>
+        <button class="btn-ghost" style="margin-top:20px;font-size:12px;padding:8px 20px" onclick="showPage('prescription')">Request custom →</button>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- PROCESS -->
+  <section class="section process-section">
+    <div class="section-tag">How it works</div>
+    <h2>Prescription to patient.<br>Every time, 24 hours.</h2>
+    <p class="section-sub">A documented, traceable workflow — from the moment you send a script to the moment your patient receives it.</p>
+
+    <div class="process-steps">
+      <div class="process-step">
+        <div class="step-circle">01</div>
+        <div class="step-icon">📋</div>
+        <h3>Prescription received</h3>
+        <p>Submit via our portal or WhatsApp. We confirm receipt within 30 minutes during clinic hours and log it to your account.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle">02</div>
+        <div class="step-icon">⚗️</div>
+        <h3>Batch prepared</h3>
+        <p>Full batch manufacturing record generated. APIs weighed, compounded under controlled conditions with in-process pH and appearance checks.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle">03</div>
+        <div class="step-icon">🔬</div>
+        <h3>QC & labelling</h3>
+        <p>HPLC spot-check on the batch. Patient label generated with your clinic name, formulation, dose, and instructions.</p>
+      </div>
+      <div class="process-step">
+        <div class="step-circle">04</div>
+        <div class="step-icon">📦</div>
+        <h3>Dispatched</h3>
+        <p>Delivered to your clinic or directly to your patient within Bengaluru. Patient SMS notification on dispatch.</p>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Compound<span>Rx</span></div>
+    <p class="footer-note">For registered healthcare professionals only · Bengaluru, Karnataka</p>
+  </footer>
+</div>
+
+<!-- ═══════════ PRESCRIPTION PAGE ═══════════ -->
+<div class="page" id="page-prescription">
+  <div class="rx-hero">
+    <div class="section-tag">Prescription portal</div>
+    <h2 style="margin-bottom:12px">Send a prescription.</h2>
+    <p style="font-size:16px;color:var(--text2);font-weight:300;max-width:540px">Fill in patient and formulation details below. We'll confirm within 30 minutes and dispatch within 24 hours.</p>
+  </div>
+
+  <div class="rx-form-wrap">
+
+    <!-- Doctor details -->
+    <div class="form-block">
+      <div class="form-section-title">Doctor details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Doctor name</label>
+          <input type="text" placeholder="Dr. Ananya Sharma">
+        </div>
+        <div class="form-group">
+          <label>Clinic name</label>
+          <input type="text" placeholder="Sharma Skin & Hair Clinic">
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Registration number</label>
+          <input type="text" placeholder="MCI / State Council Reg. No.">
+        </div>
+        <div class="form-group">
+          <label>Contact number</label>
+          <input type="tel" placeholder="+91 98765 43210">
+        </div>
+      </div>
+    </div>
+
+    <!-- Patient details -->
+    <div class="form-block">
+      <div class="form-section-title">Patient details</div>
+      <div class="form-row three">
+        <div class="form-group">
+          <label>Patient name</label>
+          <input type="text" placeholder="Priya Mehta">
+        </div>
+        <div class="form-group">
+          <label>Age</label>
+          <input type="number" placeholder="28">
+        </div>
+        <div class="form-group">
+          <label>Gender</label>
+          <select>
+            <option value="">Select</option>
+            <option>Female</option>
+            <option>Male</option>
+            <option>Other</option>
+          </select>
+        </div>
+      </div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Diagnosis / Indication</label>
+          <input type="text" placeholder="e.g. Melasma, adult hormonal acne">
+        </div>
+        <div class="form-group">
+          <label>Skin type (Fitzpatrick)</label>
+          <select>
+            <option value="">Select</option>
+            <option>Type I–II (fair)</option>
+            <option>Type III (medium)</option>
+            <option>Type IV (olive)</option>
+            <option>Type V–VI (dark)</option>
+          </select>
+        </div>
+      </div>
+    </div>
+
+    <!-- Formulation -->
+    <div class="form-block">
+      <div class="form-section-title">Formulation details</div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Base formulation</label>
+          <select id="baseFormSelect" onchange="updateAPIs()">
+            <option value="">Select a formulation</option>
+            <option value="tret-niac-azel">Tret + Niacinamide + Azelaic Acid</option>
+            <option value="kojic-tran-azel-tret">Kojic + Tranexamic + Azelaic + Tret</option>
+            <option value="spiro-clinda-tret">Spiro + Clinda + Tret</option>
+            <option value="tret-hq-kojic">Tret + Hydroquinone + Kojic</option>
+            <option value="adapalene">Adapalene Gel</option>
+            <option value="minoxidil">Minoxidil Foam</option>
+            <option value="custom">Custom formulation</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Vehicle / Base</label>
+          <select>
+            <option>Cream</option>
+            <option>Gel</option>
+            <option>Lotion</option>
+            <option>Foam</option>
+            <option>Solution</option>
+            <option>Ointment</option>
+          </select>
+        </div>
+      </div>
+
+      <!-- Dynamic API concentrations -->
+      <div id="apiConcentrations"></div>
+
+      <div class="form-row">
+        <div class="form-group">
+          <label>Quantity</label>
+          <select>
+            <option>15ml</option>
+            <option>20ml</option>
+            <option>30ml</option>
+            <option>50ml</option>
+            <option>100ml</option>
+            <option>Custom</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Packaging</label>
+          <select>
+            <option>15ml Airless pump</option>
+            <option>30ml Airless pump</option>
+            <option>Amber glass jar</option>
+            <option>Tube</option>
+            <option>Dropper bottle</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form-row full">
+        <div class="form-group">
+          <label>Special instructions / notes</label>
+          <textarea placeholder="e.g. Patient is pregnant, avoid retinoids. Reduce HQ to 2%. Apply only at night."></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Upload prescription -->
+    <div class="form-block">
+      <div class="form-section-title">Upload prescription image (optional)</div>
+      <div class="upload-area" id="uploadArea">
+        <div class="upload-icon">📎</div>
+        <p class="upload-text">Tap to upload or drag & drop</p>
+        <p class="upload-sub">JPG, PNG, PDF — max 10MB</p>
+        <input type="file" accept="image/*,.pdf" onchange="handleUpload(this)">
+      </div>
+      <div class="upload-preview" id="uploadPreview">
+        <span>✓</span><span id="uploadFileName">File uploaded</span>
+      </div>
+    </div>
+
+    <button class="submit-btn" onclick="submitRx()">Submit Prescription →</button>
+
+    <div class="rx-success" id="rxSuccess">
+      <h3>✓ Prescription received</h3>
+      <p>We'll confirm within 30 minutes and your formulation will be dispatched within 24 hours. You'll receive an SMS confirmation.</p>
+    </div>
+
+  </div>
+
+  <footer>
+    <div class="footer-logo">Compound<span>Rx</span></div>
+    <p class="footer-note">For registered healthcare professionals only · Bengaluru, Karnataka</p>
+  </footer>
+</div>
+
+<!-- ═══════════ WHY COMPOUNDING PAGE ═══════════ -->
+<div class="page" id="page-why">
+  <div class="why-hero">
+    <div class="why-content">
+      <div class="section-tag">Why compounding</div>
+      <h2 style="max-width:640px">Commercial formulations are built for everyone.<br>Your patients aren't everyone.</h2>
+      <p style="font-size:17px;color:var(--text2);font-weight:300;line-height:1.7;max-width:600px;margin-top:20px">Generic topicals are manufactured at fixed concentrations for a median patient. Compounding lets you prescribe exactly what your patient needs — the right active, at the right dose, in the right vehicle, without compromise.</p>
+    </div>
+  </div>
+
+  <section style="padding:80px 48px;background:var(--black)">
+    <div class="why-content">
+      <div class="why-grid">
+        <div class="why-card">
+          <div class="why-card-tag">Precision dosing</div>
+          <div class="why-card-icon">⚖️</div>
+          <h3>Exact concentrations, your way</h3>
+          <p>Commercial products offer one or two fixed concentrations. With compounding, you titrate to the patient — 0.025% tretinoin for a sensitive first-timer, 0.1% for a tolerant patient of three years. The dose fits the person, not the other way around.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card-tag">Combination therapy</div>
+          <div class="why-card-icon">🧬</div>
+          <h3>Multi-active formulas in one step</h3>
+          <p>Patients struggle with five-step routines. Compounding combines your prescribed actives into a single, stable vehicle — improving compliance dramatically. One bottle, every active working together, one application per day.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card-tag">Vehicle engineering</div>
+          <div class="why-card-icon">🧪</div>
+          <h3>No unwanted excipients</h3>
+          <p>Commercial topicals carry fragrances, preservatives, and solvents to extend shelf life and improve aesthetics at scale. Compounded formulations are stripped to essentials — no propylene glycol for sensitive patients, no fragrance for reactive skin, no unnecessary fillers.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card-tag">Market gaps</div>
+          <div class="why-card-icon">🎯</div>
+          <h3>Actives the market doesn't carry</h3>
+          <p>Topical spironolactone, tranexamic acid combinations, kojic acid at effective concentrations — these don't exist commercially in India. Compounding unlocks your ability to prescribe evidence-based actives regardless of whether a pharma company has found them profitable to manufacture.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card-tag">Patient outcomes</div>
+          <div class="why-card-icon">📈</div>
+          <h3>Better results, stronger retention</h3>
+          <p>When a patient sees visible improvement from a formulation your clinic prescribed — a formulation with your name on the label — they associate the result with you. That builds long-term loyalty and word-of-mouth referrals that no commercial product can generate for your practice.</p>
+        </div>
+        <div class="why-card">
+          <div class="why-card-tag">Quality assurance</div>
+          <div class="why-card-icon">🔬</div>
+          <h3>HPLC-verified, not assumed</h3>
+          <p>Most compounding pharmacies hand you a bottle. We hand you a batch record, a stability file, and HPLC-confirmed potency data. You can tell your patient exactly what they're applying — because we've tested it, not just compounded it.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- COMPARISON TABLE -->
+  <section class="comparison-section">
+    <div class="section-tag" style="justify-content:center">How we compare</div>
+    <h2 style="text-align:center;margin-bottom:48px">CompoundRx vs the alternatives.</h2>
+    <div class="compare-table">
+      <div class="compare-header">
+        <span>Feature</span>
+        <span>CompoundRx</span>
+        <span>Generic compounder</span>
+      </div>
+      <div class="compare-row"><span>Custom concentrations</span><span class="compare-check check-yes">✓</span><span class="compare-check check-partial">~</span></div>
+      <div class="compare-row"><span>HPLC potency verification</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
+      <div class="compare-row"><span>Batch manufacturing record</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
+      <div class="compare-row"><span>Stability data available</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
+      <div class="compare-row"><span>Your clinic name on label</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
+      <div class="compare-row"><span>24-hour turnaround</span><span class="compare-check check-yes">✓</span><span class="compare-check check-partial">~</span></div>
+      <div class="compare-row"><span>Digital prescription portal</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
+      <div class="compare-row"><span>Patient SMS tracking</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
+      <div class="compare-row"><span>pH-optimised vehicles</span><span class="compare-check check-yes">✓</span><span class="compare-check check-partial">~</span></div>
+      <div class="compare-row" style="border-bottom:none"><span>Outcome tracking reports</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
+    </div>
+  </section>
+
+  <footer>
+    <div class="footer-logo">Compound<span>Rx</span></div>
+    <p class="footer-note">For registered healthcare professionals only · Bengaluru, Karnataka</p>
+  </footer>
+</div>
+
+<!-- ═══════════ ABOUT PAGE ═══════════ -->
+<div class="page" id="page-about">
+  <div class="about-hero">
+    <div class="about-content">
+      <div>
+        <div class="section-tag">About</div>
+        <h2 style="margin-bottom:20px">The formulator<br>behind the formula.</h2>
+        <p style="font-size:15px;color:var(--text2);font-weight:300;line-height:1.7;margin-bottom:16px">I'm Saad — a pharmacist and topical formulation scientist based in Bengaluru. I built CompoundRx because I saw a consistent gap between what dermatologists want to prescribe and what compounding pharmacies can actually deliver.</p>
+        <p style="font-size:15px;color:var(--text2);font-weight:300;line-height:1.7">Most compounders have a production floor. I have an analytical lab, stability data, and three years of formulation R&D specifically in dermatological actives — retinoids, depigmenting agents, anti-androgens. The difference shows up in every batch.</p>
+
+        <div class="about-cred-grid">
+          <div class="cred-card">
+            <div class="cred-card-label">Qualification</div>
+            <h4>B.Pharm</h4>
+            <p>Registered pharmacist, Karnataka State Pharmacy Council</p>
+          </div>
+          <div class="cred-card">
+            <div class="cred-card-label">Experience</div>
+            <h4>3 years R&D</h4>
+            <p>Topical formulation development — creams, gels, foams, solutions</p>
+          </div>
+          <div class="cred-card">
+            <div class="cred-card-label">Analytical</div>
+            <h4>HPLC & TLC</h4>
+            <p>In-house method development and validation for topical APIs</p>
+          </div>
+          <div class="cred-card">
+            <div class="cred-card-label">Business</div>
+            <h4>MBA (in progress)</h4>
+            <p>Understanding the clinical and commercial side of pharmacy partnership</p>
+          </div>
+        </div>
+      </div>
+
+      <div style="position:relative">
+        <div style="background:var(--dark2);border:1px solid var(--border2);border-radius:12px;padding:36px;position:relative">
+          <div style="font-size:48px;color:var(--teal);opacity:0.3;font-family:'Syne',sans-serif;line-height:1;margin-bottom:8px">"</div>
+          <p style="font-size:18px;color:var(--white);font-weight:300;line-height:1.6;font-style:italic;margin-bottom:24px">Most compounding pharmacies hand you a bottle and hope for the best. We hand you a bottle, a batch record, and a stability file. Your patients deserve that standard.</p>
+          <div style="display:flex;align-items:center;gap:12px">
+            <div style="width:40px;height:40px;border-radius:50%;background:linear-gradient(135deg,var(--teal),var(--blue));display:flex;align-items:center;justify-content:center;font-family:'Syne',sans-serif;font-weight:800;font-size:14px;color:var(--black)">S</div>
+            <div>
+              <div style="font-size:14px;font-weight:500;color:var(--white)">Saad</div>
+              <div style="font-size:12px;color:var(--muted2)">Founder, CompoundRx</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PITCH TO DOCTORS -->
+  <div class="about-pitch">
+    <div class="pitch-box">
+      <div class="section-tag" style="justify-content:center;margin-bottom:24px">For dermatologists</div>
+      <h2>Your expertise.<br><span>Your patients' faces.</span><br>Your name on the result.</h2>
+      <p>You spend years building your clinical judgment. The formulation your patient applies every night should reflect that — not a generic bottle from a pharmacy shelf. Partner with CompoundRx and your prescriptions become precision tools, with your clinic's name on every label and your outcomes tracked every quarter.</p>
+      <div class="contact-row">
+        <button class="btn-primary" onclick="showPage('prescription')">Send a prescription</button>
+        <a href="mailto:saad@compoundrx.in" class="btn-ghost">Schedule a call</a>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="footer-logo">Compound<span>Rx</span></div>
+    <p class="footer-note">For registered healthcare professionals only · Bengaluru, Karnataka</p>
+  </footer>
+</div>
+
+<script>
+// CURSOR
+const cursor = document.getElementById('cursor');
+const ring = document.getElementById('cursorRing');
+document.addEventListener('mousemove', e => {
+  cursor.style.left = e.clientX - 4 + 'px';
+  cursor.style.top = e.clientY - 4 + 'px';
+  ring.style.left = e.clientX - 16 + 'px';
+  ring.style.top = e.clientY - 16 + 'px';
+});
+document.querySelectorAll('button,a,input,select,textarea,.form-card,.why-card,.cred-card').forEach(el => {
+  el.addEventListener('mouseenter', () => { ring.style.transform = 'scale(1.5)'; ring.style.borderColor = 'var(--teal2)'; });
+  el.addEventListener('mouseleave', () => { ring.style.transform = 'scale(1)'; ring.style.borderColor = 'var(--teal)'; });
+});
+
+// PAGE ROUTING
+function showPage(name) {
+  document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.nav-link').forEach(l => l.classList.remove('active'));
+  document.getElementById('page-' + name).classList.add('active');
+  const links = { home: 0, prescription: 1, why: 2, about: 3 };
+  document.querySelectorAll('.nav-link')[links[name]]?.classList.add('active');
+  window.scrollTo(0, 0);
+}
+
+// API CONCENTRATIONS DYNAMIC
+const apiData = {
+  'tret-niac-azel': [
+    { name: 'Tretinoin', options: ['0.010%','0.025%','0.05%','0.1%'] },
+    { name: 'Niacinamide', options: ['2%','4%','5%','10%'] },
+    { name: 'Azelaic Acid', options: ['5%','10%','15%','20%'] },
+  ],
+  'kojic-tran-azel-tret': [
+    { name: 'Kojic Acid', options: ['1%','2%','3%'] },
+    { name: 'Tranexamic Acid', options: ['2%','3%','5%'] },
+    { name: 'Azelaic Acid', options: ['5%','10%','15%'] },
+    { name: 'Tretinoin', options: ['0.010%','0.025%','0.05%'] },
+  ],
+  'spiro-clinda-tret': [
+    { name: 'Spironolactone', options: ['2%','5%','10%'] },
+    { name: 'Clindamycin (phosphate)', options: ['0.5%','1%','2%'] },
+    { name: 'Tretinoin', options: ['0.010%','0.025%','0.05%'] },
+  ],
+  'tret-hq-kojic': [
+    { name: 'Tretinoin', options: ['0.025%','0.05%','0.1%'] },
+    { name: 'Hydroquinone', options: ['2%','3%','4%'] },
+    { name: 'Kojic Acid', options: ['1%','2%','3%'] },
+  ],
+  'adapalene': [
+    { name: 'Adapalene', options: ['0.1%','0.3%'] },
+  ],
+  'minoxidil': [
+    { name: 'Minoxidil', options: ['2%','5%','10%'] },
+  ],
+  'custom': [],
+};
+
+function updateAPIs() {
+  const val = document.getElementById('baseFormSelect').value;
+  const container = document.getElementById('apiConcentrations');
+  const apis = apiData[val] || [];
+
+  if (!apis.length && val === 'custom') {
+    container.innerHTML = `<div class="form-row full"><div class="form-group"><label>Describe custom formulation</label><textarea placeholder="List each active and desired concentration e.g. Minoxidil 5% + Spironolactone 5% in foam base"></textarea></div></div>`;
+    return;
+  }
+  if (!apis.length) { container.innerHTML = ''; return; }
+
+  let html = '<div style="margin-bottom:8px"><label style="font-size:11px;font-weight:500;letter-spacing:1px;text-transform:uppercase;color:var(--muted2)">API concentrations</label></div>';
+  html += '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:12px;margin-bottom:16px">';
+  apis.forEach(api => {
+    html += `<div class="form-group"><label>${api.name}</label><select>`;
+    api.options.forEach(o => { html += `<option>${o}</option>`; });
+    html += `<option>Custom</option></select></div>`;
+  });
+  html += '</div>';
+  container.innerHTML = html;
+}
+
+// FILE UPLOAD
+function handleUpload(input) {
+  if (input.files && input.files[0]) {
+    const preview = document.getElementById('uploadPreview');
+    document.getElementById('uploadFileName').textContent = input.files[0].name;
+    preview.style.display = 'flex';
+  }
+}
+
+// SUBMIT
+function submitRx() {
+  const success = document.getElementById('rxSuccess');
+  success.style.display = 'block';
+  success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  setTimeout(() => { success.style.display = 'none'; }, 6000);
+}
+</script>
+</body>
+</html>
