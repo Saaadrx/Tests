@@ -86,7 +86,8 @@ h1 .blue{color:var(--blue2)}
 /* Cream squeeze blob */
 .cream-blob{position:absolute;bottom:62px;left:50%;transform:translateX(-50%);width:54px;z-index:3;animation:squeezeIn 0.9s 0.4s cubic-bezier(.22,1,.36,1) both}
 @keyframes squeezeIn{from{opacity:0;transform:translateX(-50%) scaleY(0);transform-origin:top center}to{opacity:1;transform:translateX(-50%) scaleY(1)}}
-
+@keyframes pumpPress{0%,100%{transform:translateY(0)}40%,60%{transform:translateY(6px)}}
+.bottle-pump-head{animation:pumpPress 3s ease-in-out infinite}
 /* neon glow on tube cap */
 .neon-ring{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:32px;height:6px;background:var(--neon2);border-radius:3px;opacity:0.55;filter:blur(4px);pointer-events:none}
 
@@ -375,20 +376,6 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:36px 48
               </linearGradient>
             </defs>
           </svg>
-
-          <!-- Cream squeeze coming out of nozzle -->
-          <svg class="cream-blob" width="54" height="38" viewBox="0 0 54 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:52px;left:50%;transform:translateX(-22%)">
-            <!-- cream ribbon -->
-            <path d="M24 2 C24 2 28 8 26 14 C24 20 30 24 28 32 C27 36 24 38 21 36" stroke="#e2f0ee" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85"/>
-            <!-- cream highlight -->
-            <path d="M25 2 C25 2 28 7 27 13 C26 18 30 22 29 30" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/>
-            <!-- neon teal tint on cream -->
-            <path d="M24 2 C24 2 28 8 26 14 C24 20 30 24 28 32" stroke="#5eead4" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.18"/>
-          </svg>
-        </div>
-      </div>
-    </div>
-  </div>
 
   <!-- STATS -->
   <div class="stats-bar">
