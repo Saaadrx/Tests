@@ -296,7 +296,7 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
               <div style="font-size:8px;font-weight:600;color:#5eead4;margin-bottom:3px">Dr. Sharma's Skin Clinic</div>
               <div class="label-divider"></div>
               <div class="label-patient">Patient<strong>Priya Mehta, 28F</strong></div>
-              <div class="label-content">Tret 0.025% + Niacinamide 4%<br>+ Azelaic Acid 10%</div>
+              <div class="label-content">Tretinoin 0.025% + Niacinamide 4%<br>+ Azelaic Acid 10%</div>
               <div class="label-divider" style="margin-top:6px"></div>
               <div class="label-ml">15ml Airless Pump · Batch #FL-2024-047</div>
             </div>
@@ -332,8 +332,8 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
 
       <div class="form-card">
         <span class="form-tag">Acne · PIH · Melasma</span>
-        <h3>Tret + Niacinamide + Azelaic Acid</h3>
-        <p class="form-conc">Tretinoin 0.025–0.05% · Niacinamide 4% · Azelaic Acid 10%</p>
+        <h3>T AA N</h3>
+        <p class="form-conc">Tretinoin 0.015–0.1% · Niacinamide 4% · Azelaic Acid 4%</p>
         <p class="form-desc">Triple-active brightening formula. Niacinamide buffers tretinoin irritation while azelaic acid addresses PIH without hydroquinone. Suitable for Fitzpatrick III–VI.</p>
         <ul class="form-specs">
           <li>Gel or cream vehicle available</li>
@@ -345,8 +345,8 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
 
       <div class="form-card">
         <span class="form-tag">Melasma · Hyperpigmentation</span>
-        <h3>Kojic + Tranexamic + Azelaic + Tret</h3>
-        <p class="form-conc">Kojic Acid 2% · Tranexamic Acid 3% · Azelaic Acid 10% · Tretinoin 0.025%</p>
+        <h3>Tx K A T</h3>
+        <p class="form-conc">Kojic Acid 2% · Tranexamic Acid 5% · Azelaic Acid 10% · Tretinoin 0.025%</p>
         <p class="form-desc">A multi-mechanism depigmenting combination targeting tyrosinase inhibition, melanocyte activation, and cell turnover simultaneously. Suitable for resistant melasma.</p>
         <ul class="form-specs">
           <li>Four complementary depigmenting mechanisms</li>
@@ -358,7 +358,7 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
 
       <div class="form-card">
         <span class="form-tag">Adult Hormonal Acne</span>
-        <h3>Spiro + Clinda + Tret</h3>
+        <h3>C S T</h3>
         <p class="form-conc">Spironolactone 5% · Clindamycin 1% (phosphate) · Tretinoin 0.025%</p>
         <p class="form-desc">Topical anti-androgenic formula for hormonal adult acne. Avoids systemic spironolactone effects while targeting follicular androgen receptors locally.</p>
         <ul class="form-specs">
@@ -371,8 +371,8 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
 
       <div class="form-card">
         <span class="form-tag">Pigmentation · Anti-ageing</span>
-        <h3>Tret + Hydroquinone + Kojic</h3>
-        <p class="form-conc">Tretinoin 0.05% · Hydroquinone 2–4% · Kojic Acid 2%</p>
+        <h3>HY Q T K</h3>
+        <p class="form-conc">Tretinoin 0.03% · Hydroquinone 8% · Kojic Acid 2%</p>
         <p class="form-desc">A modified Kligman-type formula combining retinoid, bleaching agent, and tyrosinase inhibitor. For moderate-to-severe melasma where faster results are needed.</p>
         <ul class="form-specs">
           <li>HQ concentration titratable 2–4%</li>
@@ -528,10 +528,10 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
           <label>Base formulation</label>
           <select id="baseFormSelect" onchange="updateAPIs()">
             <option value="">Select a formulation</option>
-            <option value="tret-niac-azel">Tret + Niacinamide + Azelaic Acid</option>
-            <option value="kojic-tran-azel-tret">Kojic + Tranexamic + Azelaic + Tret</option>
-            <option value="spiro-clinda-tret">Spiro + Clinda + Tret</option>
-            <option value="tret-hq-kojic">Tret + Hydroquinone + Kojic</option>
+            <option value="tret-niac-azel">Tretinoin + Niacinamide + Azelaic Acid</option>
+            <option value="kojic-tran-azel-tret">Kojic acid + Tranexamic acid + Azelaic acid + Tretinoin</option>
+            <option value="spiro-clinda-tret">Spironolactone + Clindamycin + Tretinoin</option>
+            <option value="tret-hq-kojic">Tretinoin + Hydroquinone + Kojic acid</option>
             <option value="adapalene">Adapalene Gel</option>
             <option value="minoxidil">Minoxidil Foam</option>
             <option value="custom">Custom formulation</option>
@@ -545,7 +545,6 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
             <option>Lotion</option>
             <option>Foam</option>
             <option>Solution</option>
-            <option>Ointment</option>
           </select>
         </div>
       </div>
@@ -569,10 +568,7 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
           <label>Packaging</label>
           <select>
             <option>15ml Airless pump</option>
-            <option>30ml Airless pump</option>
             <option>Amber glass jar</option>
-            <option>Tube</option>
-            <option>Dropper bottle</option>
           </select>
         </div>
       </div>
@@ -631,7 +627,7 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
           <div class="why-card-tag">Precision dosing</div>
           <div class="why-card-icon">⚖️</div>
           <h3>Exact concentrations, your way</h3>
-          <p>Commercial products offer one or two fixed concentrations. With compounding, you titrate to the patient — 0.025% tretinoin for a sensitive first-timer, 0.1% for a tolerant patient of three years. The dose fits the person, not the other way around.</p>
+          <p>Commercial products offer one or two fixed concentrations. With compounding, you titrate to the patient — 0.015% tretinoin for a sensitive first-timer, 0.1% for a tolerant patient of three years. The dose fits the person, not the other way around.</p>
         </div>
         <div class="why-card">
           <div class="why-card-tag">Combination therapy</div>
@@ -684,7 +680,6 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
       <div class="compare-row"><span>Your clinic name on label</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
       <div class="compare-row"><span>24-hour turnaround</span><span class="compare-check check-yes">✓</span><span class="compare-check check-partial">~</span></div>
       <div class="compare-row"><span>Digital prescription portal</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
-      <div class="compare-row"><span>Patient SMS tracking</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
       <div class="compare-row"><span>pH-optimised vehicles</span><span class="compare-check check-yes">✓</span><span class="compare-check check-partial">~</span></div>
       <div class="compare-row" style="border-bottom:none"><span>Outcome tracking reports</span><span class="compare-check check-yes">✓</span><span class="compare-check check-no">✗</span></div>
     </div>
@@ -703,7 +698,7 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:28px 48
       <div>
         <div class="section-tag">About</div>
         <h2 style="margin-bottom:20px">The formulator<br>behind the formula.</h2>
-        <p style="font-size:15px;color:var(--text2);font-weight:300;line-height:1.7;margin-bottom:16px">I'm Saad — a pharmacist and topical formulation scientist based in Bengaluru. I built CompoundRx because I saw a consistent gap between what dermatologists want to prescribe and what compounding pharmacies can actually deliver.</p>
+        <p style="font-size:15px;color:var(--text2);font-weight:300;line-height:1.7;margin-bottom:16px">I'm Saad — a pharmacist and topical formulation scientist based in Bengaluru. I built CompoundRx because I saw a consistent gap between what dermatologists want to prescribe and what cmarket can actually deliver.</p>
         <p style="font-size:15px;color:var(--text2);font-weight:300;line-height:1.7">Most compounders have a production floor. I have an analytical lab, stability data, and three years of formulation R&D specifically in dermatological actives — retinoids, depigmenting agents, anti-androgens. The difference shows up in every batch.</p>
 
         <div class="about-cred-grid">
