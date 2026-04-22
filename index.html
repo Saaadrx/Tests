@@ -86,8 +86,7 @@ h1 .blue{color:var(--blue2)}
 /* Cream squeeze blob */
 .cream-blob{position:absolute;bottom:62px;left:50%;transform:translateX(-50%);width:54px;z-index:3;animation:squeezeIn 0.9s 0.4s cubic-bezier(.22,1,.36,1) both}
 @keyframes squeezeIn{from{opacity:0;transform:translateX(-50%) scaleY(0);transform-origin:top center}to{opacity:1;transform:translateX(-50%) scaleY(1)}}
-@keyframes pumpPress{0%,100%{transform:translateY(0)}40%,60%{transform:translateY(6px)}}
-.bottle-pump-head{animation:pumpPress 3s ease-in-out infinite}
+
 /* neon glow on tube cap */
 .neon-ring{position:absolute;top:18px;left:50%;transform:translateX(-50%);width:32px;height:6px;background:var(--neon2);border-radius:3px;opacity:0.55;filter:blur(4px);pointer-events:none}
 
@@ -377,6 +376,20 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:36px 48
             </defs>
           </svg>
 
+          <!-- Cream squeeze coming out of nozzle -->
+          <svg class="cream-blob" width="54" height="38" viewBox="0 0 54 38" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;top:52px;left:50%;transform:translateX(-22%)">
+            <!-- cream ribbon -->
+            <path d="M24 2 C24 2 28 8 26 14 C24 20 30 24 28 32 C27 36 24 38 21 36" stroke="#e2f0ee" stroke-width="5" stroke-linecap="round" fill="none" opacity="0.85"/>
+            <!-- cream highlight -->
+            <path d="M25 2 C25 2 28 7 27 13 C26 18 30 22 29 30" stroke="white" stroke-width="1.5" stroke-linecap="round" fill="none" opacity="0.4"/>
+            <!-- neon teal tint on cream -->
+            <path d="M24 2 C24 2 28 8 26 14 C24 20 30 24 28 32" stroke="#5eead4" stroke-width="2" stroke-linecap="round" fill="none" opacity="0.18"/>
+          </svg>
+        </div>
+      </div>
+    </div>
+  </div>
+
   <!-- STATS -->
   <div class="stats-bar">
     <div class="stat-item">
@@ -388,7 +401,7 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:36px 48
       <span class="stat-label">Every batch analytically verified</span>
     </div>
     <div class="stat-item">
-      <span class="stat-num" style="color:var(--neon);text-shadow:0 0 18px rgba(57,255,159,0.5)">n</span>
+      <span class="stat-num" style="color:var(--neon);text-shadow:0 0 18px rgba(57,255,159,0.5)">∞</span>
       <span class="stat-label">Possible formulation combinations — every % titrated to your patient</span>
     </div>
   </div>
@@ -608,12 +621,12 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:36px 48
           <label>Base formulation</label>
           <select id="baseFormSelect" onchange="updateAPIs()">
             <option value="">Select a formulation</option>
-            <option value="Tretinoin-Niacinamide-Azelaic acid">Tret + Niacinamide + Azelaic Acid</option>
-            <option value="Kojic-Tran-Azel-Tret">Kojic + Tranexamic + Azelaic + Tret</option>
-            <option value="Spironolactone-Clindamycin-Tret">Spironolactone + Clindamycin + Tret</option>
-            <option value="Tret-HQ-Kojic">Tret + Hydroquinone + Kojic</option>
-            <option value="Adapalene">Adapalene Gel</option>
-            <option value="Minoxidil">Minoxidil Foam</option>
+            <option value="tret-niac-azel">Tret + Niacinamide + Azelaic Acid</option>
+            <option value="kojic-tran-azel-tret">Kojic + Tranexamic + Azelaic + Tret</option>
+            <option value="spiro-clinda-tret">Spiro + Clinda + Tret</option>
+            <option value="tret-hq-kojic">Tret + Hydroquinone + Kojic</option>
+            <option value="adapalene">Adapalene Gel</option>
+            <option value="minoxidil">Minoxidil Foam</option>
             <option value="custom">Custom formulation</option>
           </select>
         </div>
@@ -625,6 +638,7 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:36px 48
             <option>Lotion</option>
             <option>Foam</option>
             <option>Solution</option>
+            <option>Ointment</option>
           </select>
         </div>
       </div>
@@ -648,6 +662,10 @@ footer{background:var(--dark);border-top:1px solid var(--border);padding:36px 48
           <label>Packaging</label>
           <select>
             <option>15ml Airless pump</option>
+            <option>30ml Airless pump</option>
+            <option>Amber glass jar</option>
+            <option>Tube</option>
+            <option>Dropper bottle</option>
           </select>
         </div>
       </div>
